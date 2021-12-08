@@ -41,6 +41,8 @@ def solve(tasks):
         dur = x.get_duration()
         prof = x.get_max_benefit()
         prev_idx = bisect.bisect(memo, [ddl-dur]) - 1
+        if ddl >= 1440:
+            continue
         """
         if max profit at the latest end time before the current task's latest possible start time,
         plus the profit of the current task, is greater than the 
@@ -58,7 +60,8 @@ def solve(tasks):
             memo.append([ddl, memo[prev_idx][1] + prof, prev_idx, curr_id])
         else:
             min_late = dur + memo[-1][0] - ddl
-            memo.append([dur + memo[-1][0], memo[-1][1] + x.get_late_benefit(min_late), len(memo) - 1, curr_id])
+            if dur + memo[-1][0] < 1440:
+                memo.append([dur + memo[-1][0], memo[-1][1] + x.get_late_benefit(min_late), len(memo) - 1, curr_id])
         """
         check if doing the task late would give profit
         """
@@ -98,8 +101,8 @@ def run_solver(size):
         write_output_file(output_path, output)
 
 
-if __name__ == '__main__':
-    run_solver('small')
+# if __name__ == '__main__':
+#     run_solver('medium')
 
 
 # if __name__ == '__main__':
@@ -110,16 +113,16 @@ if __name__ == '__main__':
 #     #     print(t.get_task_id())
 
 # Here's an example of how to run your solver.
-# if __name__ == '__main__':
-#     for size in os.listdir('inputs/'):
-#         if size not in ['small', 'medium', 'large']:
-#             continue
-#         for input_file in os.listdir('inputs/{}/'.format(size)):
-#             if size not in input_file:
-#                 continue
-#             input_path = 'inputs/{}/{}'.format(size, input_file)
-#             output_path = 'outputs/{}/{}.out'.format(size, input_file[:-3])
-#             print(input_path, output_path)
-#             tasks = read_input_file(input_path)
-#             output = solve(tasks)
-#             write_output_file(output_path, output)
+if __name__ == '__main__':
+    for size in os.listdir('inputs/'):
+        if size not in ['small', 'medium', 'large']:
+            continue
+        for input_file in os.listdir('inputs/{}/'.format(size)):
+            if size not in input_file:
+                continue
+            input_path = 'inputs/{}/{}'.format(size, input_file)
+            output_path = 'outputs/{}/{}.out'.format(size, input_file[:-3])
+            print(input_path, output_path)
+            tasks = read_input_file(input_path)
+            output = solve(tasks)
+            write_output_file(output_path, output)
