@@ -64,7 +64,7 @@ def solve(tasks):
         """
         # min_late = dur + memo[-1][0] - ddl
         # memo.append([dur + memo[-1][0], memo[-1][1] + x.get_late_benefit(min_late), len(memo) - 1, curr_id])
-    # print(memo)
+    # print(memo[-1])
     
     prev_memo_idx = memo[-1][2]
     igloos_reversed = [memo[-1][3]]
@@ -79,13 +79,20 @@ def solve(tasks):
     return igloos_reversed
     # pass
 
+def run_solver(size):
+    for input_file in os.listdir('inputs/{}/'.format(size)):
+        if size not in input_file:
+            continue
+        input_path = 'inputs/{}/{}'.format(size, input_file)
+        output_path = 'outputs/{}/{}.out'.format(size, input_file[:-3])
+        print(input_path, output_path)
+        tasks = read_input_file(input_path)
+        output = solve(tasks)
+        write_output_file(output_path, output)
+
 
 if __name__ == '__main__':
-    tasks = read_input_file("samples/100.in")
-    output = solve(tasks)
-    print(output)
-    # for t in tasks:
-    #     print(t.get_task_id())
+    run_solver('small')
 
 
 # Here's an example of how to run your solver.
