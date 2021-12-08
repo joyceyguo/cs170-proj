@@ -75,6 +75,7 @@ def solve(tasks):
 
     # print(igloos_reversed)
     igloos_reversed.reverse()
+    igloos_reversed.remove(0)
 
     return igloos_reversed
     # pass
@@ -94,6 +95,13 @@ def run_solver(size):
 if __name__ == '__main__':
     run_solver('small')
 
+
+# if __name__ == '__main__':
+#     tasks = read_input_file("samples/100.in")
+#     output = solve(tasks)
+#     print(output)
+#     # for t in tasks:
+#     #     print(t.get_task_id())
 
 # Here's an example of how to run your solver.
 # if __name__ == '__main__':
