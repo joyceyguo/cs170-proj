@@ -66,16 +66,22 @@ def solve(tasks):
         # memo.append([dur + memo[-1][0], memo[-1][1] + x.get_late_benefit(min_late), len(memo) - 1, curr_id])
     # print(memo[-1])
     
+    has_zero = False
     prev_memo_idx = memo[-1][2]
+    if memo[-1][3] == 0:
+        has_zero = True
     igloos_reversed = [memo[-1][3]]
     while(prev_memo_idx != -1):
         prev_memo = memo[prev_memo_idx]
+        if prev_memo[3] == 0:
+            has_zero = True
         igloos_reversed.append(prev_memo[3])
         prev_memo_idx = prev_memo[2]
 
     # print(igloos_reversed)
     igloos_reversed.reverse()
-    igloos_reversed.remove(0)
+    if has_zero:
+        igloos_reversed.remove(0)
 
     return igloos_reversed
     # pass
