@@ -57,10 +57,12 @@ def solve(tasks):
         **observation** the profit is strictly increasing  
         """
         if memo[prev_idx][1] + prof > memo[-1][1]:
-            memo.append([ddl, memo[prev_idx][1] + prof, prev_idx, curr_id])
+            start_time = memo[prev_idx][0]
+            if start_time + dur <= 1440:
+                memo.append([start_time + dur, memo[prev_idx][1] + prof, prev_idx, curr_id])
         else:
             min_late = dur + memo[-1][0] - ddl
-            if dur + memo[-1][0] < 1440:
+            if dur + memo[-1][0] <= 1440:
                 memo.append([dur + memo[-1][0], memo[-1][1] + x.get_late_benefit(min_late), len(memo) - 1, curr_id])
         """
         check if doing the task late would give profit
@@ -86,6 +88,11 @@ def solve(tasks):
     if has_zero:
         igloos_reversed.remove(0)
 
+    # duration = 0
+    # for x in igloos_reversed:
+    #     duration += tasks[x+1].get_duration()
+    # print("duration:", duration)
+
     return igloos_reversed
     # pass
 
@@ -106,11 +113,11 @@ def run_solver(size):
 
 
 # if __name__ == '__main__':
-#     tasks = read_input_file("samples/100.in")
+#     tasks = read_input_file("inputs/small/small-217.in")
 #     output = solve(tasks)
 #     print(output)
-#     # for t in tasks:
-#     #     print(t.get_task_id())
+    # for t in tasks:
+    #     print(t.get_task_id())
 
 # Here's an example of how to run your solver.
 if __name__ == '__main__':
