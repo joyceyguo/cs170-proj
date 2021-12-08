@@ -30,7 +30,7 @@ def solve(tasks):
         if we do the task: ..
     """
 
-    sorted_tasks = sorted(tasks, key = lambda x : (x.get_deadline(), x.get_max_benefit()))
+    sorted_tasks = sorted(tasks, key = lambda x : (x.get_deadline(), x.get_max_benefit()/x.get_duration()))
     # for t in sorted_tasks:
     #     print(t.get_task_id())
     memo = [[0,0,-1,0]] # time, current max profit, prev_idx, task_id 
@@ -40,7 +40,8 @@ def solve(tasks):
         ddl = x.get_deadline()
         dur = x.get_duration()
         prof = x.get_max_benefit()
-        prev_idx = bisect.bisect(memo, [ddl-dur]) - 1
+        prev_idx = bisect.bisect(memo, [ddl-dur+1]) - 1
+        # print(curr_id, "\tdeadline:", ddl, "\t dur", dur, "\t prof", prof)
         """
         if max profit at the latest end time before the current task's latest possible start time,
         plus the profit of the current task, is greater than the 
@@ -56,18 +57,17 @@ def solve(tasks):
         """
         if memo[prev_idx][1] + prof > memo[-1][1]:
             start_time = memo[prev_idx][0]
-            if start_time + dur <= 1440:
+            if start_time + dur <= 1440 and start_time + dur <= ddl:
                 memo.append([start_time + dur, memo[prev_idx][1] + prof, prev_idx, curr_id])
-        else:
-            min_late = dur + memo[-1][0] - ddl
-            if dur + memo[-1][0] <= 1440:
-                memo.append([dur + memo[-1][0], memo[-1][1] + x.get_late_benefit(min_late), len(memo) - 1, curr_id])
+        # else:
+        #     min_late = dur + memo[-1][0] - ddl
+        #     if dur + memo[-1][0] <= 1440:
+        #         memo.append([dur + memo[-1][0], memo[-1][1] + x.get_late_benefit(min_late), len(memo) - 1, curr_id])
         """
         check if doing the task late would give profit
         """
         # min_late = dur + memo[-1][0] - ddl
         # memo.append([dur + memo[-1][0], memo[-1][1] + x.get_late_benefit(min_late), len(memo) - 1, curr_id])
-    # print(memo[-1])
     
     has_zero = False
     prev_memo_idx = memo[-1][2]
@@ -81,7 +81,6 @@ def solve(tasks):
         igloos_reversed.append(prev_memo[3])
         prev_memo_idx = prev_memo[2]
 
-    # print(igloos_reversed)
     igloos_reversed.reverse()
     if has_zero:
         igloos_reversed.remove(0)
@@ -92,7 +91,6 @@ def solve(tasks):
     # print("duration:", duration)
 
     return igloos_reversed
-    # pass
 
 def run_solver(size):
     for input_file in os.listdir('inputs/{}/'.format(size)):
@@ -111,11 +109,9 @@ def run_solver(size):
 
 
 # if __name__ == '__main__':
-#     tasks = read_input_file("inputs/small/small-217.in")
+#     tasks = read_input_file("inputs/small/small-187.in")
 #     output = solve(tasks)
 #     print(output)
-    # for t in tasks:
-    #     print(t.get_task_id())
 
 # Here's an example of how to run your solver.
 if __name__ == '__main__':
