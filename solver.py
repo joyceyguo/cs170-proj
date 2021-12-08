@@ -30,7 +30,7 @@ def solve(tasks):
         if we do the task: ..
     """
 
-    sorted_tasks = sorted(tasks, key = lambda x : x.get_deadline())
+    sorted_tasks = sorted(tasks, key = lambda x : (x.get_deadline(), x.get_max_benefit()))
     # for t in sorted_tasks:
     #     print(t.get_task_id())
     memo = [[0,0,-1,0]] # time, current max profit, prev_idx, task_id 
@@ -41,8 +41,6 @@ def solve(tasks):
         dur = x.get_duration()
         prof = x.get_max_benefit()
         prev_idx = bisect.bisect(memo, [ddl-dur]) - 1
-        if ddl >= 1440:
-            continue
         """
         if max profit at the latest end time before the current task's latest possible start time,
         plus the profit of the current task, is greater than the 
