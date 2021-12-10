@@ -1,12 +1,13 @@
 # CS 170 Project Fall 2021
 
-Take a look at the project spec before you get started!
+## Getting Started
+Run `solver.py` in the directory directly by running `python3 solver.py`
 
-Requirements:
+## Requirements
 
 Python 3.6+
 
-Files:
+## Files
 - `parse.py`: functions to read/write inputs and outputs
 - `solver.py`: where you should be writing your code to solve inputs
 - `Task.py`: contains a class that is useful for processing inputs
